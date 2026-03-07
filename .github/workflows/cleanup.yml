@@ -1,0 +1,35 @@
+name: Terraform Cleanup
+
+on: 
+  # schedule:
+  #  - cron: "0 17 * * *"
+  push:
+    branches:
+      - main
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout-code
+        uses: actions/checkout@v6
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.0.0
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
+
+      - name: Terraform Initialisation
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -var-file="dev.tfvars" --auto-approve
+
+     # - name: Terraform Destroy
+     #   run: terraform destroy -var-file="dev.tfvars" --auto-approve
