@@ -12,9 +12,9 @@ terraform {
 }
 
 resource "aws_instance" "cleanup" {
-    ami = var.ami
-    instance_type = var.instance_type
+    ami = "ami-0b6c6ebed2801a5cb"
+    instance_type = "t3.micro"
     tags = {
-        Name = "myapp-${var.env}"
+        Name = "myapp-test"
     }
 }
