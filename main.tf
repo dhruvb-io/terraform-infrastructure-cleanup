@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 terraform {
   backend "s3" {
@@ -10,6 +10,12 @@ terraform {
   }
 }
 resource "aws_instance" "test" {
-  ami = "ami-0b6c6ebed2801a5cb"
-  instance_type= "t3.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
+tags = {
+    Name        = "Test-App-Server"
+    Environment = "test"
+    ManagedBy   = "Terraform"
+    Owner       = "Dhruv"
+  }
 }
